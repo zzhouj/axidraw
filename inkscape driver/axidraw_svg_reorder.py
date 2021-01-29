@@ -10,7 +10,7 @@
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2020 Windell H. Oskay, Evil Mad Science LLC
+# Copyright (c) 2021 Windell H. Oskay, Evil Mad Science LLC
 # www.evilmadscientist.com
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -335,7 +335,11 @@ class ReorderEffect(inkex.Effect):
                         # Use getFirstPoint and getLastPoint on each object:
                         start_plottable, first_point = self.getFirstPoint(a_node, matNew)
                         end_plottable, last_point  = self.getLastPoint(a_node, matNew)
-                        
+
+                    if not ( start_plottable and end_plottable):
+                        first_point = [(-1.), (-1.)]
+                        last_point = [(-1.), (-1.)]
+
                         coord_dict[id] = (start_plottable and end_plottable,
                             first_point[0], first_point[1], last_point[0], last_point[1] )
                         # Entry in group_dict is this node 
@@ -349,6 +353,10 @@ class ReorderEffect(inkex.Effect):
                     # Capture the first and last x,y coordinates of the optimized node
                     start_plottable, first_point = self.group_first_pt(node, matNew)
                     end_plottable, last_point  = self.group_last_pt(node, matNew)
+
+                    if not ( start_plottable and end_plottable):
+                        first_point = [(-1.), (-1.)]
+                        last_point = [(-1.), (-1.)]
 
                     # Then add this optimized node to the coord_dict
                     coord_dict[id] = (start_plottable and end_plottable,
@@ -369,6 +377,10 @@ class ReorderEffect(inkex.Effect):
                         start_plottable, first_point = self.group_first_pt(node, matNew)
                         end_plottable, last_point  = self.group_last_pt(node, matNew) 
 
+                    if not ( start_plottable and end_plottable):
+                        first_point = [(-1.), (-1.)]
+                        last_point = [(-1.), (-1.)]
+
                     coord_dict[id] = (start_plottable and end_plottable,
                         first_point[0],  first_point[1], last_point[0],  last_point[1] )
                     # Entry in group_dict is this node 
@@ -383,6 +395,10 @@ class ReorderEffect(inkex.Effect):
                 else:
                     start_plottable, first_point = self.getFirstPoint(node, matNew)
                     end_plottable, last_point  = self.getLastPoint(node, matNew)
+
+                if not ( start_plottable and end_plottable):
+                    first_point = [(-1.), (-1.)]
+                    last_point = [(-1.), (-1.)]
 
                 coord_dict[id] = (start_plottable and end_plottable,
                     first_point[0], first_point[1], last_point[0],  last_point[1] )
