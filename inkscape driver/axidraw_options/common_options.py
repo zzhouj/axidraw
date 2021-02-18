@@ -82,6 +82,31 @@ def core_options(parser, config):
                        help="Preview mode rendering option (0-3). 0: None. " \
                        + "1: Pen-down movement. 2: Pen-up movement. 3: All movement.")
     
+    options.add_option("--gen_gcodes", \
+                       type="inkbool", action="store", dest="gen_gcodes", \
+                       default=False,\
+                       help="Generate G-Codes")
+
+    options.add_option("--gcode_linear_motion", \
+                       type="string", action="store", dest="gcode_linear_motion", \
+                       default="G1", \
+                       help="G-Code for linear motion")
+
+    options.add_option("--gcode_pen_raise", \
+                       type="string", action="store", dest="gcode_pen_raise", \
+                       default="M5", \
+                       help="G-Code for pen raise")
+
+    options.add_option("--gcode_pen_lower", \
+                       type="string", action="store", dest="gcode_pen_lower", \
+                       default="M3 S30", \
+                       help="G-Code for pen lower")
+
+    options.add_option("--gcode_pen_delay", \
+                       type="float", action="store", dest="gcode_pen_delay", \
+                       default=0.2, \
+                       help="Delay seconds for pen raise or lower")
+
     options.add_option("--model",\
                        type="int", action="store", dest="model",\
                        default=config["model"],\

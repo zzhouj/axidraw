@@ -290,6 +290,14 @@ class AxiDraw(inkex.Effect):
         self.path_data_pd = []  # pen-down path data for preview layers
         self.path_data_pen_up = -1  # A value of -1 indicates an indeterminate state- requiring new "M" in path.
 
+        self.gcodes = [
+            'G20', # inches units
+            'G90', # absolute distance mode
+            'G92', # current position as home
+            self.options.gcode_pen_raise,
+            'G4 P{0:.6f}'.format(self.options.gcode_pen_delay),
+        ]
+
         self.vel_data_plot = False
         self.vel_data_time = 0
         self.vel_data_chart1 = []  # Velocity visualization, for preview of velocity vs time Motor 1
@@ -944,6 +952,9 @@ class AxiDraw(inkex.Effect):
                         inkex.addNS('desc', ns_prefix): "Motor 2 V"}
                     etree.SubElement(self.previewLayer,
                                      inkex.addNS('path', 'svg '), path_attrs, nsmap=inkex.NSS)
+
+            if self.options.gen_gcodes:
+                self.user_message_fun('\n'.join(self.gcodes))
 
             if self.options.report_time and (self.copies_to_plot == 0): 
                 # Only calculate these after plotting last copy,
@@ -2280,6 +2291,8 @@ class AxiDraw(inkex.Effect):
         if abs(motor_steps1) < 1 and abs(motor_steps2) < 1:  # If total movement is less than one step, skip this movement.
             return
 
+        self.gcodes.append('{0} X{1:.6f} Y{2:.6f}'.format(self.options.gcode_linear_motion, x_dest, y_dest))
+
         segment_length_inches = plot_utils.distance(delta_x_inches_rounded, delta_y_inches_rounded)
 
         seg_logger.debug('\ndelta_x_inches Requested: ' + str(delta_x_inches))
@@ -2941,6 +2954,9 @@ class AxiDraw(inkex.Effect):
     def pen_raise(self):
         self.virtual_pen_up = True  # Virtual pen keeps track of state for resuming plotting.
         if not self.resume_mode and not self.pen_up:  # skip if pen is already up, or if we're resuming.
+            self.gcodes.append(self.options.gcode_pen_raise)
+            self.gcodes.append('G4 P{0:.6f}'.format(self.options.gcode_pen_delay))
+
             self.pen_lifts += 1
             if self.use_custom_layer_pen_height:
                 pen_down_pos = self.layer_pen_pos_down
@@ -2976,6 +2992,9 @@ class AxiDraw(inkex.Effect):
         self.virtual_pen_up = False  # Virtual pen keeps track of state for resuming plotting.
         if self.pen_up or self.pen_up is None:  # skip if pen is already down
             if not self.resume_mode and not self.b_stopped:  # skip if resuming or stopped
+                self.gcodes.append(self.options.gcode_pen_lower)
+                self.gcodes.append('G4 P{0:.6f}'.format(self.options.gcode_pen_delay))
+
                 self.pen_lowers += 1
                 if self.use_custom_layer_pen_height:
                     pen_down_pos = self.layer_pen_pos_down

@@ -212,6 +212,11 @@ class AxiDrawWrapperClass( inkex.Effect ):
         ad.options.page_delay       = self.options.page_delay
         ad.options.preview          = self.options.preview
         ad.options.rendering        = self.options.rendering
+        ad.options.gen_gcodes       = self.options.gen_gcodes
+        ad.options.gcode_linear_motion = self.options.gcode_linear_motion
+        ad.options.gcode_pen_raise  = self.options.gcode_pen_raise
+        ad.options.gcode_pen_lower  = self.options.gcode_pen_lower
+        ad.options.gcode_pen_delay  = self.options.gcode_pen_delay
         ad.options.model            = self.options.model
         ad.options.port             = port
         ad.options.setup_type       = self.options.setup_type
