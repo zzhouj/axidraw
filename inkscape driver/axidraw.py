@@ -291,11 +291,12 @@ class AxiDraw(inkex.Effect):
         self.path_data_pen_up = -1  # A value of -1 indicates an indeterminate state- requiring new "M" in path.
 
         self.gcodes = [
-            'G20', # inches units
+            'G21', # mm units
             'G90', # absolute distance mode
             'G92', # current position as home
             self.options.gcode_pen_raise,
             'G4 P{0:.6f}'.format(self.options.gcode_pen_delay),
+            '{0} F{1:.6f}'.format(self.options.gcode_linear_motion, self.options.feedrate_pen_raise),
         ]
 
         self.vel_data_plot = False
@@ -2291,7 +2292,7 @@ class AxiDraw(inkex.Effect):
         if abs(motor_steps1) < 1 and abs(motor_steps2) < 1:  # If total movement is less than one step, skip this movement.
             return
 
-        self.gcodes.append('{0} X{1:.6f} Y{2:.6f}'.format(self.options.gcode_linear_motion, x_dest, y_dest))
+        self.gcodes.append('{0} X{1:.6f} Y{2:.6f}'.format(self.options.gcode_linear_motion, x_dest * 25.4, y_dest * 25.4))
 
         segment_length_inches = plot_utils.distance(delta_x_inches_rounded, delta_y_inches_rounded)
 
@@ -2956,6 +2957,7 @@ class AxiDraw(inkex.Effect):
         if not self.resume_mode and not self.pen_up:  # skip if pen is already up, or if we're resuming.
             self.gcodes.append(self.options.gcode_pen_raise)
             self.gcodes.append('G4 P{0:.6f}'.format(self.options.gcode_pen_delay))
+            self.gcodes.append('{0} F{1:.6f}'.format(self.options.gcode_linear_motion, self.options.feedrate_pen_raise))
 
             self.pen_lifts += 1
             if self.use_custom_layer_pen_height:
@@ -2994,6 +2996,7 @@ class AxiDraw(inkex.Effect):
             if not self.resume_mode and not self.b_stopped:  # skip if resuming or stopped
                 self.gcodes.append(self.options.gcode_pen_lower)
                 self.gcodes.append('G4 P{0:.6f}'.format(self.options.gcode_pen_delay))
+                self.gcodes.append('{0} F{1:.6f}'.format(self.options.gcode_linear_motion, self.options.feedrate_pen_lower))
 
                 self.pen_lowers += 1
                 if self.use_custom_layer_pen_height:

@@ -121,7 +121,9 @@ _gui-text="Pen height: DOWN, (%):">30</param>
 <param indent="5" name="gcode_linear_motion" type="string" _gui-text="G-Code for linear motion:">G1</param>
 <param indent="5" name="gcode_pen_raise" type="string" _gui-text="G-Code for pen raise:">M5</param>
 <param indent="5" name="gcode_pen_lower" type="string" _gui-text="G-Code for pen lower:">M3 S30</param>
-<param indent="5" name="gcode_pen_delay" type="float" _gui-text="Delay seconds for pen raise or lower:">0.2</param>
+<param indent="5" name="gcode_pen_delay" type="float" _gui-text="Delay (seconds) for pen raise or lower:">0.2</param>
+<param indent="5" name="feedrate_pen_raise" type="float" max="10000.0" _gui-text="Feedrate (mm/min) for pen raise:">3000.0</param>
+<param indent="5" name="feedrate_pen_lower" type="float" max="10000.0" _gui-text="Feedrate (mm/min) for pen lower:">500.0</param>
 
 </page>
 

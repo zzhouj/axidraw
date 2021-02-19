@@ -105,7 +105,17 @@ def core_options(parser, config):
     options.add_option("--gcode_pen_delay", \
                        type="float", action="store", dest="gcode_pen_delay", \
                        default=0.2, \
-                       help="Delay seconds for pen raise or lower")
+                       help="Delay (seconds) for pen raise or lower")
+
+    options.add_option("--feedrate_pen_raise", \
+                       type="float", action="store", dest="feedrate_pen_raise", \
+                       default=3000.0, \
+                       help="Feedrate (mm/min) for pen raise")
+
+    options.add_option("--feedrate_pen_lower", \
+                       type="float", action="store", dest="feedrate_pen_lower", \
+                       default=500.0, \
+                       help="Feedrate (mm/min) for pen lower")
 
     options.add_option("--model",\
                        type="int", action="store", dest="model",\
